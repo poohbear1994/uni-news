@@ -1,14 +1,14 @@
 <template>
 	<view class="content">
-		干净的页面
+		<navbar></navbar>
+		<view v-for="item in 100">
+			{{item}}
+		</view>
 	</view>
 </template>
 
 <script>
 	export default {
-		components:{
-			
-		},
 		data() {
 			return {
 				

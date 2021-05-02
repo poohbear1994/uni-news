@@ -3,19 +3,21 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle":"custom",
+				"navigationBarTextStyle":"white",
+				"enablePullDownRefresh": false
 			}
 		}, {
-			"path": "pages/about/about",
+			"path": "pages/my/my",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "我的",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
-			"path": "pages/my/my",
+			"path": "pages/follow/follow",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "关注",
 				"enablePullDownRefresh": false
 			}
 
@@ -24,22 +26,23 @@
 	"tabBar": {
 		"list": [{
 			"pagePath": "pages/index/index",
-			"iconPath":"static/home.png",
-			"selectedIconPath":"static/home-active.png",
+			"iconPath": "static/tabbar/home.png",
+			"selectedIconPath": "static/tabbar/home-active.png",
 			"text": "首页"
 		}, {
-			"pagePath": "pages/about/about",
-			"iconPath":"static/follow.png",
-			"selectedIconPath":"static/follow-active.png",
-			"text": "关于"
+			"pagePath": "pages/follow/follow",
+			"iconPath": "static/tabbar/follow.png",
+			"selectedIconPath": "static/tabbar/follow-active.png",
+			"text": "关注"
 		}, {
 			"pagePath": "pages/my/my",
-			"iconPath":"static/my.png",
-			"selectedIconPath":"static/my-active.png",
+			"iconPath": "static/tabbar/my.png",
+			"selectedIconPath": "static/tabbar/my-active.png",
 			"text": "我的"
 		}],
 		"color": "#666",
-		"selectedColor": "#f5a5f",
+		"selectedColor": "#f07373",
+		"backgroundColor":"#fff",
 		"borderStyle": "black"
 	},
 	"globalStyle": {

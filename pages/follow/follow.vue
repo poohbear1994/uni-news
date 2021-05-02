@@ -13,12 +13,6 @@
 		},
 		methods: {
 			
-		},
-		async onLoad() {
-			const res = await uniCloud.callFunction({
-				name: 'login'
-			})
-			console.log(res)
 		}
 	}
 </script>
