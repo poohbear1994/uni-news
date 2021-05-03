@@ -1,10 +1,10 @@
 <template>
-	<view class="content">
+	<view class="home">
 		<navbar />
 		<tab :list="tabList" @tab="tab"/>
-		<view v-for="item in 100">
-			{{item}}
-		</view>
+		<list-scroll>
+			
+		</list-scroll>
 	</view>
 </template>
 
@@ -34,5 +34,14 @@
 </script>
 
 <style lang="scss" scoped>
-	
+	page {
+		height: 100%;
+		display: flex;
+	}
+	.home {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		border: 1px solid red;
+	}
 </style>
