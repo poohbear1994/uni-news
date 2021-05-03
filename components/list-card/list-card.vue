@@ -1,63 +1,66 @@
 <template>
 	<view>
 		<!-- 基础卡片样式 -->
-		<view v-if="mode === 'base'" class="list-card">
+		<view v-if="item.mode === 'base'" class="list-card">
 			<view class="listcard-image">
-				<image src="../../static/tabbar/logo.png" mode="aspectFill" />
+				<image :src="item.cover[0]" mode="aspectFill" />
 			</view>
 			<view class="listcard-content">
 				<view class="listcard-content_title">
-					<text>uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架</text>
+					<text>{{item.title}}</text>
 				</view>
 				<view class="listcard-content__des">
 					<view class="listcard-content__des-label">
 						<view class="listcard-content__des-label-item">
-							前端
+							{{item.classify}}
 						</view>
 					</view>
-					<view class="listcard-content__des-browe">998人浏览</view>
+					<view class="listcard-content__des-browe">{{item.
+browse_count}}浏览</view>
 				</view>
 			</view>
 		</view>
 
 		<!-- 多图模式 -->
-		<view class="list-card mode-column" v-if="mode === 'column'" >
+		<view class="list-card mode-column" v-if="item.mode === 'column'">
 			<view class="listcard-content">
 				<view class="listcard-content_title">
-					<text>uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架</text>
+					<text>{{item.title}}</text>
 				</view>
 				<view class="listcard-image">
-					<view v-for="item in 3" :key="item" class="listcard-image__item">
-						<image src="../../static/tabbar/logo.png" mode="aspectFill" />
+					<view v-if="index < 3" v-for="(img, index) in item.cover" :key="index" class="listcard-image__item">
+						<image :src="img" mode="aspectFill" />
 					</view>
 				</view>
 				<view class="listcard-content__des">
 					<view class="listcard-content__des-label">
 						<view class="listcard-content__des-label-item">
-							前端
+							{{item.classify}}
 						</view>
 					</view>
-					<view class="listcard-content__des-browe">998人浏览</view>
+					<view class="listcard-content__des-browe">{{item.
+browse_count}}浏览</view>
 				</view>
 			</view>
 		</view>
 
 		<!-- 大图模式 -->
-		<view class="list-card mode-image" v-if="mode === 'image'" >
+		<view class="list-card mode-image" v-if="item.mode === 'image'">
 			<view class="listcard-content">
 				<view class="listcard-image">
-					<image src="../../static/tabbar/logo.png" mode="scaleToFill" />
+					<image :src="item.cover[0]" mode="scaleToFill" />
 				</view>
 				<view class="listcard-content_title">
-					<text>uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架uni-app跨端框架</text>
+					<text>{{item.title}}</text>
 				</view>
 				<view class="listcard-content__des">
 					<view class="listcard-content__des-label">
 						<view class="listcard-content__des-label-item">
-							前端
+							{{item.classify}}
 						</view>
 					</view>
-					<view class="listcard-content__des-browe">998人浏览</view>
+					<view class="listcard-content__des-browe">{{item.
+browse_count}}浏览</view>
 				</view>
 			</view>
 		</view>
@@ -68,9 +71,11 @@
 	export default {
 		name: "list-card",
 		props: {
-			mode: {
-				type: String,
-				default: 'base'
+			item: {
+				type: Object,
+				default () {
+					return {}
+				}
 			}
 		},
 		data() {
@@ -183,15 +188,19 @@
 				}
 			}
 		}
+
 		&.mode-image {
 			flex-direction: column;
+
 			.listcard-image {
 				width: 100%;
 				height: 100px;
 			}
+
 			.listcard-content {
 				padding-left: 0;
 				margin-top: 10px;
+
 				.listcard-content__des {
 					display: flex;
 					align-items: center;

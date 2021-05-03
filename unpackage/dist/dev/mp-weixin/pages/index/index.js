@@ -101,11 +101,8 @@ try {
     tab: function() {
       return __webpack_require__.e(/*! import() | components/tab/tab */ "components/tab/tab").then(__webpack_require__.bind(null, /*! @/components/tab/tab.vue */ 46))
     },
-    listScroll: function() {
-      return __webpack_require__.e(/*! import() | components/list-scroll/list-scroll */ "components/list-scroll/list-scroll").then(__webpack_require__.bind(null, /*! @/components/list-scroll/list-scroll.vue */ 68))
-    },
-    listCard: function() {
-      return __webpack_require__.e(/*! import() | components/list-card/list-card */ "components/list-card/list-card").then(__webpack_require__.bind(null, /*! @/components/list-card/list-card.vue */ 76))
+    list: function() {
+      return __webpack_require__.e(/*! import() | components/list/list */ "components/list/list").then(__webpack_require__.bind(null, /*! @/components/list/list.vue */ 84))
     }
   }
 } catch (e) {
@@ -173,14 +170,16 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-
-
 var _index = __webpack_require__(/*! ../../models/index.js */ 63);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+
+
 var indexModel = new _index.IndexModel();var _default =
 {
   data: function data() {
     return {
-      tabList: [] };
+      tabList: [],
+      tabIndex: 0,
+      activeIndex: 0 };
 
   },
   methods: {
@@ -189,8 +188,14 @@ var indexModel = new _index.IndexModel();var _default =
                   indexModel.get_label());case 2:labelRes = _context.sent;
                 _this.tabList = labelRes.data;case 4:case "end":return _context.stop();}}}, _callee);}))();
     },
-    tab: function tab(_ref) {var data = _ref.data,index = _ref.index;
-      console.log(data.name, index);
+    tab: function tab(_ref)
+
+
+    {var data = _ref.data,index = _ref.index;
+      this.activeIndex = index;
+    },
+    change: function change(current) {
+      this.tabIndex = current;
     } },
 
   onLoad: function onLoad() {

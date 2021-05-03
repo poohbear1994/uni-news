@@ -8,6 +8,11 @@ class IndexModel extends HTTP {
 			url: 'get_label'
 		})
 	}
+	get_list() {
+		return this.request({
+			url: 'get_list'
+		})
+	}
 }
 
 export {

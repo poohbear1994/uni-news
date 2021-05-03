@@ -9722,6 +9722,11 @@ IndexModel = /*#__PURE__*/function (_HTTP) {_inherits(IndexModel, _HTTP);var _su
       return this.request({
         url: 'get_label' });
 
+    } }, { key: "get_list", value: function get_list()
+    {
+      return this.request({
+        url: 'get_list' });
+
     } }]);return IndexModel;}(_http.HTTP);exports.IndexModel = IndexModel;
 
 /***/ }),

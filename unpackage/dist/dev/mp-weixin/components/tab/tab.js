@@ -161,6 +161,12 @@ var _default2 =
       type: Array,
       default: function _default() {
         return [];
+      } },
+
+    tabIndex: {
+      type: Number,
+      default: function _default() {
+        return 0;
       } } },
 
 
@@ -169,6 +175,12 @@ var _default2 =
       activeIndex: 0 };
 
   },
+  watch: {
+    tabIndex: function tabIndex(newVal, oldVal) {
+      console.log(newVal, oldVal);
+      this.activeIndex = newVal;
+    } },
+
   methods: {
     clickTab: function clickTab(item, index) {
       this.activeIndex = index;

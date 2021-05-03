@@ -23,12 +23,24 @@
 				default () {
 					return []
 				}
+			},
+			tabIndex: {
+				type: Number,
+				default () {
+					return 0
+				}
 			}
 		},
 		data() {
 			return {
 				activeIndex: 0
 			};
+		},
+		watch:{
+			tabIndex(newVal, oldVal) {
+				console.log(newVal, oldVal)
+				this.activeIndex = newVal
+			}
 		},
 		methods: {
 			clickTab(item, index) {
@@ -67,6 +79,7 @@
 					padding: 0 10px;
 					color: #333;
 					font-size: 14px;
+
 					&.active {
 						color: $mk-base-color;
 					}

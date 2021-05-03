@@ -1,22 +1,24 @@
 <template>
 	<view class="home">
 		<navbar />
-		<tab :list="tabList" @tab="tab"/>
-		<list-scroll>
-			<list-card mode="base"/>
-			<list-card mode="image"/>
-			<list-card mode="column"/>
-		</list-scroll>
+		<tab :list="tabList" :tabIndex="tabIndex" @tab="tab" />
+		<view class="home-list">
+			<list :tab="tabList" @change="change" :activeIndex="activeIndex"></list>
+		</view>
 	</view>
 </template>
 
 <script>
-	import {IndexModel} from '../../models/index.js'
+	import {
+		IndexModel
+	} from '../../models/index.js'
 	const indexModel = new IndexModel()
 	export default {
 		data() {
 			return {
-				tabList: []
+				tabList: [],
+				tabIndex: 0,
+				activeIndex: 0
 			}
 		},
 		methods: {
@@ -25,8 +27,14 @@
 				const labelRes = await indexModel.get_label()
 				this.tabList = labelRes.data
 			},
-			tab({data,index}) {
-				console.log(data.name, index)
+			tab({
+				data,
+				index
+			}) {
+				this.activeIndex = index
+			},
+			change(current) {
+				this.tabIndex = current
 			}
 		},
 		onLoad() {
@@ -40,11 +48,16 @@
 		height: 100%;
 		display: flex;
 	}
+
 	.home {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		border: 1px solid red;
 		overflow: hidden;
+
+		.home-list {
+			flex: 1;
+			box-sizing: border-box;
+		}
 	}
 </style>
