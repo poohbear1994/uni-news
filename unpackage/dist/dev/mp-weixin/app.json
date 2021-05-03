@@ -37,6 +37,5 @@
     "backgroundColor": "#fff",
     "borderStyle": "black"
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

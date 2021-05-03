@@ -102,6 +102,9 @@ try {
   components = {
     navbar: function() {
       return __webpack_require__.e(/*! import() | components/navbar/navbar */ "components/navbar/navbar").then(__webpack_require__.bind(null, /*! @/components/navbar/navbar.vue */ 29))
+    },
+    tab: function() {
+      return __webpack_require__.e(/*! import() | components/tab/tab */ "components/tab/tab").then(__webpack_require__.bind(null, /*! @/components/tab/tab.vue */ 46))
     }
   }
 } catch (e) {
@@ -156,23 +159,38 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 58));
+
+
+
+
+
+
+
+
+
+
+var _index = __webpack_require__(/*! ../../models/index.js */ 63);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+var indexModel = new _index.IndexModel();var _default =
 {
   data: function data() {
-    return {};
-
+    return {
+      tabList: [] };
 
   },
-  methods: {} };exports.default = _default;
+  methods: {
+    // 获取选项卡item
+    getLabel: function getLabel() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var labelRes;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+                  indexModel.get_label());case 2:labelRes = _context.sent;
+                _this.tabList = labelRes.data;case 4:case "end":return _context.stop();}}}, _callee);}))();
+    },
+    tab: function tab(_ref) {var data = _ref.data,index = _ref.index;
+      console.log(data.name, index);
+    } },
+
+  onLoad: function onLoad() {
+    this.getLabel();
+  } };exports.default = _default;
 
 /***/ })
 ],[[11,"common/runtime","common/vendor"]]]);
