@@ -3,7 +3,9 @@
 		<navbar />
 		<tab :list="tabList" @tab="tab"/>
 		<list-scroll>
-			
+			<list-card mode="base"/>
+			<list-card mode="image"/>
+			<list-card mode="column"/>
 		</list-scroll>
 	</view>
 </template>
@@ -43,5 +45,6 @@
 		flex-direction: column;
 		flex: 1;
 		border: 1px solid red;
+		overflow: hidden;
 	}
 </style>
