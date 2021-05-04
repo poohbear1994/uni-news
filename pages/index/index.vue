@@ -24,8 +24,13 @@
 		methods: {
 			// 获取选项卡item
 			async getLabel() {
-				const labelRes = await indexModel.get_label()
-				this.tabList = labelRes.data
+				const {
+					data
+				} = await indexModel.getLabel()
+				data.unshift({
+					name: '全部'
+				})
+				this.tabList = data
 			},
 			tab({
 				data,

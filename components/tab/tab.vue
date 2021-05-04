@@ -37,8 +37,7 @@
 			};
 		},
 		watch:{
-			tabIndex(newVal, oldVal) {
-				console.log(newVal, oldVal)
+			tabIndex(newVal) {
 				this.activeIndex = newVal
 			}
 		},

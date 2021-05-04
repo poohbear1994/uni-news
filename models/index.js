@@ -3,14 +3,15 @@ import {
 } from '../utils/http.js'
 
 class IndexModel extends HTTP {
-	get_label() {
+	getLabel() {
 		return this.request({
 			url: 'get_label'
 		})
 	}
-	get_list() {
+	getList(data) {
 		return this.request({
-			url: 'get_list'
+			url: 'get_list',
+			data
 		})
 	}
 }
