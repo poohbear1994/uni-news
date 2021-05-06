@@ -41,18 +41,12 @@
 				loading: {}
 			};
 		},
-		watch: {
-			activeIndex(newVal) {
-				this.currentIndex = newVal
-			}
-		},
 		methods: {
-
 			async change(e) {
-				console.log('change')
 				const {
 					current
 				} = e.detail
+				this.$emit('change', current)
 				// 如果没有缓存
 				if (!this.isCaching(current)) {
 					const category = this.getCategory(current)
@@ -68,17 +62,15 @@
 						page,
 						index: current
 					})
-					this.currentIndex = current
 					this.setLoading(current, 'more')
 				}
-				this.$emit('change', current)
 			},
 
 			// 获取list数据
 			async getListData(parmas = {
 				category: "全部",
-				page: 0,
-				pageSize: 10
+				page: 1,
+				pageSize: 5
 			}) {
 				const {
 					data
@@ -127,13 +119,13 @@
 
 			// 加载更多
 			async loadmore() {
-				if (this.loading[this.currentIndex] === 'noMore') {
-					this.setLoading(this.currentIndex, 'noMore')
+				if (this.loading[this.activeIndex] === 'noMore') {
+					this.setLoading(this.activeIndex, 'noMore')
 					return
 				}
-				const cacheData = this.getListforCacheData(this.currentIndex)
+				const cacheData = this.getListforCacheData(this.activeIndex)
 				let page = cacheData.loadedPage + 1
-				const category = this.getCategory(this.currentIndex)
+				const category = this.getCategory(this.activeIndex)
 				const data = await this.getListData({
 					category,
 					page,
@@ -141,13 +133,13 @@
 				})
 				if (data.length) {
 					this.setListCacheData({
-						index: this.currentIndex,
+						index: this.activeIndex,
 						data: cacheData.data.concat(data),
 						page,
 					})
-					this.setLoading(this.currentIndex, 'more')
+					this.setLoading(this.activeIndex, 'more')
 				} else {
-					this.setLoading(this.currentIndex, 'noMore')
+					this.setLoading(this.activeIndex, 'noMore')
 				}
 			},
 
@@ -167,7 +159,7 @@
 				data,
 				page: 1
 			})
-			this.setLoading(this.currentIndex, 'more')
+			this.setLoading(this.activeIndex, 'more')
 		}
 	}
 </script>
