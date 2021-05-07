@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view @click="open">
 		<!-- 基础卡片样式 -->
 		<view v-if="item.mode === 'base'" class="list-card">
 			<view class="listcard-image">
@@ -85,6 +85,11 @@ browse_count}}浏览</view>
 			return {
 
 			};
+		},
+		methods: {
+			open() {
+				this.$emit('click',this.item)
+			}
 		}
 	}
 </script>

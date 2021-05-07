@@ -29,7 +29,15 @@ class IndexModel extends HTTP {
 			data
 		})
 	}
-	
+	// 搜索
+	getSearch(value) {
+		return this.request({
+			url:'get_search',
+			data:{
+				value
+			}
+		})
+	}
 }
 
 export {
