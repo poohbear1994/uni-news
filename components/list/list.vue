@@ -41,6 +41,13 @@
 				loading: {}
 			};
 		},
+		watch:{
+			tab(){
+				this.listCacheData = {}
+				this.loading={}
+				this.initializeData()
+			}
+		},
 		methods: {
 			async change(e) {
 				const {
@@ -147,19 +154,20 @@
 			setLoading(index, status) {
 				this.$set(this.loading,index,status)
 			},
-		},
-
-		async created() {
-			const data = await this.getListData({
-				category: "全部"
-			})
-			this.setList(data)
-			this.setListCacheData({
-				index: 0,
-				data,
-				page: 1
-			})
-			this.setLoading(this.activeIndex, 'more')
+			
+			// 初始化数据
+			async initializeData(){
+				const data = await this.getListData({
+					category: "全部"
+				})
+				this.setList(data)
+				this.setListCacheData({
+					index: 0,
+					data,
+					page: 1
+				})
+				this.setLoading(this.activeIndex, 'more')
+			}
 		}
 	}
 </script>

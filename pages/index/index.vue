@@ -44,6 +44,11 @@
 			}
 		},
 		onLoad() {
+			uni.$on('labelChange',() => {
+				this.getLabel()
+				this.tabIndex = 0,
+				this.activeIndex = 0
+			})
 			this.getLabel()
 		}
 	}
