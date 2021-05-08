@@ -5,25 +5,28 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state:{
-		historyList:[]
+		historyList: uni.getStorageSync('__history') || []
 	},
 	mutations:{
-		SET_HISTORY_LIST(state,history) {
-			state.historyList=history
-		},
 		ADD_HISTORY_LIST(state,history) {
-			state.historyList.unshift(history)
-			if(state.historyList.length > 10) {
-				state.historyList.pop()
+			const list = state.historyList
+			list.unshift(history)
+			if(list.length > HISTORY_LENGTH) {
+				list.pop()
 			}
+			uni.setStorageSync('__history',list)
 		},
+		CLEAR_HISTORY_LIST(state){
+			state.historyList = []
+		}
 	},
 	actions:{
-		set_history({commit,state},history){
-			commit('SET_HISTORY_LIST',history)
-		},
 		add_history({commit,state},history){
 			commit('ADD_HISTORY_LIST',history)
+		},
+		clear_history({commit,state}){
+			uni.removeStorageSync('__history')
+			commit('CLEAR_HISTORY_LIST')
 		}
 	}
 })

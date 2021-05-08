@@ -5,10 +5,10 @@
 			<view v-if="is_history" class="label-box">
 				<view class="label-header">
 					<text class="label-title">搜索历史</text>
-					<text class="label-clear">清空</text>
+					<text class="label-clear" @click="cleartHistory">清空</text>
 				</view>
 				<view class="label-content">
-					<view @click="tagClick(item)" v-if="historyList.length > 0" class="label-content__item" v-for="item in historyList">
+					<view @click="tagClick(item)" v-if="historyList.length > 0" :key="index" class="label-content__item" v-for="(item, index) in historyList">
 						{{item}}
 					</view>
 					<view v-if="historyList.length === 0" class="no-data">暂无搜索历史</view>
@@ -84,13 +84,11 @@
 				} = await indexModel.getSearch(value)
 				return data
 			},
-			// 设置搜索列表
-			setSearchList(data) {
-				this.searchList = data
-			},
-			// 清空搜索列表
-			clearSearchList() {
-				this.searchList = []
+			// 标签点击事件
+			tagClick(item){
+				this.clearSearchList()
+				this.setSearchWord(item)
+				this.change(item)
 			},
 			// 进入详情页
 			goDetail(item) {
@@ -100,15 +98,25 @@
 			addHistory(){
 				this.$store.dispatch('add_history',this.searchWord)
 			},
+			// 清空历史记录
+			cleartHistory(){
+				this.$store.dispatch('clear_history'),
+				uni.showToast({
+					title:'历史已清空',
+					icon:'success'
+				})
+			},
 			// 设置searchWord
 			setSearchWord(word){
 				this.searchWord = word
 			},
-			// 标签点击事件
-			tagClick(item){
-				this.clearSearchList()
-				this.searchWord = item
-				this.change(item)
+			// 设置搜索列表
+			setSearchList(data) {
+				this.searchList = data
+			},
+			// 清空搜索列表
+			clearSearchList() {
+				this.searchList = []
 			},
 			// 展示历史记录
 			showHistory() {
@@ -148,7 +156,6 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		border: 1px solid red;
 
 		.home-list {
 			.label-box {

@@ -7,7 +7,7 @@
 			<view class="navbar-content" :class="{search:isSearch}"
 				:style="{ height: navbarHeight + 'px', width: searchWidth ? searchWidth + 'px' : '100%'}"
 				@click.stop="open">
-				<view class="navbar-content__search-icons">
+				<view class="navbar-content__search-icons" @click="back" v-if="isSearch">
 					<uni-icons type="back" size="22" color="#fff"></uni-icons>
 				</view>
 				<!-- 伪搜索框 -->
@@ -38,7 +38,7 @@
 			},
 			searchWord: {
 				type: [Number, String],
-				default:''
+				default: ''
 			}
 		},
 		data() {
@@ -49,8 +49,8 @@
 				inputVal: ''
 			};
 		},
-		watch:{
-			searchWord(newVal){
+		watch: {
+			searchWord(newVal) {
 				this.inputVal = newVal
 			}
 		},
@@ -62,7 +62,12 @@
 				})
 			},
 			inputChange() {
-				this.$emit('input',this.inputVal)
+				this.$emit('input', this.inputVal)
+			},
+			back() {
+				uni.switchTab({
+					url: '/pages/index/index'
+				})
 			}
 		},
 		created() {
