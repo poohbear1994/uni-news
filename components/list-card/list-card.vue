@@ -87,8 +87,22 @@ browse_count}}浏览</view>
 			};
 		},
 		methods: {
+			// 跳转页面
 			open() {
 				this.$emit('click',this.item)
+				this.jumpToDetail()
+			},
+			// 跳转到详情页
+			jumpToDetail(){
+				const params = this.setDetailPreloadData()
+				uni.navigateTo({
+					url:`../../pages/home-detail/home-detail?params=${JSON.stringify(params)}`
+				})
+			},
+			// 设置传给detail页预加载用的数据
+			setDetailPreloadData(){
+				const { _id, title, create_time, thumbs_up_count, browse_count, author } = this.item
+				return { _id, title, create_time, thumbs_up_count, browse_count, author }
 			}
 		}
 	}

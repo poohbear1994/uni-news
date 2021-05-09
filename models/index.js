@@ -7,7 +7,6 @@ class IndexModel extends HTTP {
 	getLabel({
 		type
 	} = {type:''}) {
-		console.log(type)
 		return this.request({
 			url: 'get_label',
 			data: {
@@ -15,6 +14,7 @@ class IndexModel extends HTTP {
 			}
 		})
 	}
+	
 	// 获取列表数据
 	getList({
 		category,
@@ -34,6 +34,7 @@ class IndexModel extends HTTP {
 			}
 		})
 	}
+	
 	// 更新收藏
 	updateLike({
 		article_id
@@ -47,6 +48,7 @@ class IndexModel extends HTTP {
 			}
 		})
 	}
+	
 	// 搜索
 	getSearch(value) {
 		return this.request({
@@ -56,15 +58,29 @@ class IndexModel extends HTTP {
 			}
 		})
 	}
+	
 	// 更新我的标签
 	updateLabel({
 		label
 	} = {label : []}) {
-		console.log(label)
 		return this.request({
 			url: 'update_label',
 			data: {
 				label
+			}
+		})
+	}
+	
+	// 获取文章详情
+	getDetail({
+		article_id
+	} = {
+		article_id: 0
+	}) {
+		return this.request({
+			url: 'get_detail',
+			data: {
+				article_id
 			}
 		})
 	}
