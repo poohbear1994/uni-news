@@ -18,6 +18,7 @@
 				</view>
 			</view>
 		</view>
+		<!-- 内容区 -->
 		<view class="detail-content">
 			<view class="detail-html">
 				<u-parse :content="detailData.content" :noData="noData">	
@@ -25,9 +26,10 @@
 				</u-parse>
 			</view>
 		</view>
+		<!-- 底部栏 -->
 		<view class="detail-bottom">
-			<view class="detail-bottom__input">
-				<text>tantannidekanfa</text>
+			<view class="detail-bottom__input" @click="openComment">
+				<text>谈谈你的看法</text>
 				<uni-icons type="compose" size="16" color="#F07373"></uni-icons>
 			</view>
 			<view class="detail-bottom__icons">
@@ -42,6 +44,19 @@
 				</view>
 			</view>
 		</view>
+		<!-- 弹出层 -->
+		<uni-popup ref="popup" type="bottom" :maskClick="false">
+			<view class="popup-wrap">
+				<view class="popup-header">
+					<text class="popup-header__item" @click="closeComment">取消</text>
+					<text class="popup-header__item" @click="submitComment">发布</text>
+				</view>
+				<view class="popup-content">
+					<textarea class="popup-textarea" v-model="commentsValue" maxlength="200" fixed placeholder="请输入评论内容" />
+					<view class="popup-count">{{commentsValue.length}}/200</view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -58,7 +73,9 @@
 		data() {
 			return {
 				detailData: {},
-				noData:'<p style="text-align:center; color:#666">详情加载中...</p>'
+				noData:'<p style="text-align:center; color:#666">详情加载中...</p>',
+				// 评论内容
+				commentsValue:''
 			};
 		},
 		methods:{
@@ -68,6 +85,18 @@
 					article_id: this.detailData._id
 				})
 				return res.data
+			},
+			// 发布评论
+			submitComment() {
+				
+			},
+			// 打开评论区域
+			openComment() {
+				this.$refs.popup.open()
+			},
+			// 关闭评论区域
+			closeComment() {
+				this.$refs.popup.close()
 			},
 			// 设置预加载数据
 			setPreloadData(query){
@@ -180,6 +209,38 @@
 					align-items: center;
 					justify-content: center;
 					width: 44px;
+				}
+			}
+		}
+		
+		.popup-wrap{
+			background-color: #fff;
+			
+			.popup-header{
+				display: flex;
+				justify-content: space-between;
+				font-size: 14px;
+				color: #666;
+				border-bottom: 1px #F5F5F5 solid;
+				.popup-header__item{
+					height: 50px;
+					line-height: 50px;
+					padding: 0 15px;
+				}
+			}
+			.popup-content{
+				width: 100%;
+				padding: 15px;
+				box-sizing: border-box;
+				.popup-textarea{
+					width: 100%;
+					height: 200px;
+				}
+				.popup-count{
+					display: flex;
+					justify-content: flex-end;
+					font-size: 12px;
+					color: #999;
 				}
 			}
 		}
