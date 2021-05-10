@@ -25,10 +25,17 @@
 					{{detailData.content}}
 				</u-parse>
 			</view>
+			<!-- 评论区 -->
+			<view class="detail-comment">
+				<view class="comment-title">最新评论</view>
+				<view class="comment-content" v-for="item in commentsList" :key="item.comment_id">
+					<comment-box :comment="item" @reply="reply"></comment-box>
+				</view>
+			</view>
 		</view>
 		<!-- 底部栏 -->
 		<view class="detail-bottom">
-			<view class="detail-bottom__input" @click="openComment">
+			<view class="detail-bottom__input" @click="openComment('comment')">
 				<text>谈谈你的看法</text>
 				<uni-icons type="compose" size="16" color="#F07373"></uni-icons>
 			</view>
@@ -49,11 +56,11 @@
 			<view class="popup-wrap">
 				<view class="popup-header">
 					<text class="popup-header__item" @click="closeComment">取消</text>
-					<text class="popup-header__item" @click="submitComment">发布</text>
+					<text class="popup-header__item" @click="submit">发布</text>
 				</view>
 				<view class="popup-content">
-					<textarea class="popup-textarea" v-model="commentsValue" maxlength="200" fixed placeholder="请输入评论内容" />
-					<view class="popup-count">{{commentsValue.length}}/200</view>
+					<textarea class="popup-textarea" v-model="commentValue" maxlength="200" fixed placeholder="请输入评论内容" auto-focus />
+					<view class="popup-count">{{commentValue.length}}/200</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -75,46 +82,179 @@
 				detailData: {},
 				noData:'<p style="text-align:center; color:#666">详情加载中...</p>',
 				// 评论内容
-				commentsValue:''
+				commentValue:'',
+				// 评论数据
+				commentsList:[],
+				// 回复的评论
+				commentOfReply:{},
+				// 当前的模式是评论还是回复
+				currentMode:'comment',
+				// 当前是否是回复另一条回复
+				isReplyToReply: false
 			};
 		},
 		methods:{
-			// 请求文章详情
+			// 获取文章详情
 			async getDetailData(){
 				const res = await indexModel.getDetail({
 					article_id: this.detailData._id
 				})
 				return res.data
 			},
-			// 发布评论
-			submitComment() {
-				
+			
+			// 获取文章评论
+			async getComments(){
+				const res = await indexModel.getComment({
+					article_id: this.detailData._id
+				})
+				return res.data
 			},
+			
+			// 发布评论/回复
+			async submit() {
+				this.showLoading()
+				let data = null
+				if(this.currentMode === 'comment'){	
+					data = this.setPostCommentData()
+				}else if(this.currentMode === 'reply'){
+					const currentComment = this.getCommentOfReply()
+					data = this.setPostReplyData(currentComment)
+				}
+				const res = await indexModel.updateComment(data)
+				this.hideLoading()
+				this.setIsReplyToReply(false)
+				if(res.code === 200){
+					uni.showToast({
+						title:this.currentMode === 'comment'?'评论成功':'回复成功',
+						icon:'success'
+					})
+					this.closeComment()
+					return
+				}else{
+					uni.showToast({
+						title:'请检查网络',
+						icon:'none'
+					})
+				}
+			},
+			
+			// 设置上传的评论数据
+			setPostCommentData() {
+				const comment = this.commentValue
+				if(!comment) {
+					uni.showToast({
+						title:'请输入评论的内容',
+						icon:'none'
+					})
+					this.closeComment()
+					return
+				}
+				const article_id = this.detailData._id
+				return {
+					article_id,
+					content: comment
+				}
+			},
+			
+			// 回复评论
+			reply(params){
+				this.openComment('reply')
+				this.setCommentOfReply(params.comment)
+				if(params.comment.reply_id){
+					this.setIsReplyToReply(true)
+				}
+			},
+			
+			// 设置回复哪条评论
+			setCommentOfReply(comment){
+				this.commentOfReply = comment
+			},
+			
+			// 获取回复哪条评论
+			getCommentOfReply(){
+				return this.commentOfReply
+			},
+			
+			// 设置是否回复回复
+			setIsReplyToReply(bool){
+				this.isReplyToReply = bool
+			},
+			
+			// 处理需要上传的回复评论数据
+			setPostReplyData(comment){
+				const replyData = {
+					article_id: this.detailData._id,
+					comment_id: comment.comment_id,
+					content: this.commentValue
+				}
+				if(this.isReplyToReply){
+					replyData.reply_id = comment.reply_id
+					replyData.is_subReply = this.isReplyToReply
+				}
+				 return replyData
+			},
+			
+			// 设置当前模式
+			setCurrentMode(mode){
+				this.currentMode = mode
+			},
+			
 			// 打开评论区域
-			openComment() {
+			openComment(mode) {
+				this.setCurrentMode(mode)
 				this.$refs.popup.open()
 			},
+			
 			// 关闭评论区域
-			closeComment() {
+			async closeComment() {
 				this.$refs.popup.close()
+				this.clearCommentValue()
+				const commentsListData = await this.getComments()
+				this.setCommentsList(commentsListData)
 			},
+			
+			// 设置评论数据
+			setCommentsList(data) {
+				this.commentsList = data
+			},
+			
 			// 设置预加载数据
 			setPreloadData(query){
 				this.detailData = this.analysisQuery(query)
 			},
+			
 			// 设置详情数据
 			setDetailData(data){
 				this.detailData = data
 			},
+			
+			// 清空评论内容
+			clearCommentValue(){
+				this.commentValue = ''
+			},
+			
 			// 解析通过query传递的数据
 			analysisQuery(query){
 				return JSON.parse(query.params)
+			},
+			
+			// 开启loading
+			showLoading(){
+				uni.showLoading()
+			},
+			
+			// 关闭loading
+			hideLoading(){
+				uni.hideLoading()
 			}
 		},
+		
 		async onLoad(query){
 			this.setPreloadData(query)
 			const detailData = await this.getDetailData()
 			this.setDetailData(detailData)
+			const commentsListData = await this.getComments()
+			this.setCommentsList(commentsListData)
 		}
 	}
 </script>
@@ -170,6 +310,19 @@
 			min-height: 500px;
 			.detail-html {
 				padding: 0 15px;
+			}
+			.detail-comment{
+				margin-top: 30px;
+				.comment-title{
+					padding: 10px 15px;
+					font-size: 14px;
+					color: #666;
+					border-bottom: 1px solid #f5f5f5;
+				}
+				.comment-content{
+					padding: 0 15px;
+					border-top: 1px solid #eee;
+				}
 			}
 		}
 			

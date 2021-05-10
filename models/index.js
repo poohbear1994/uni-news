@@ -39,7 +39,7 @@ class IndexModel extends HTTP {
 	updateLike({
 		article_id
 	} = {
-		article_id: 0
+		article_id: ''
 	}) {
 		return this.request({
 			url: 'update_like',
@@ -75,12 +75,52 @@ class IndexModel extends HTTP {
 	getDetail({
 		article_id
 	} = {
-		article_id: 0
+		article_id: ''
 	}) {
 		return this.request({
 			url: 'get_detail',
 			data: {
 				article_id
+			}
+		})
+	}
+	
+	// 获取评论
+	getComment({
+		article_id
+	}={
+		article_id:''
+	}){
+		return this.request({
+			url: 'get_comment',
+			data:{
+				article_id
+			}
+		})
+	}
+	
+	// 更新评论
+	updateComment({
+		article_id,
+		content,
+		comment_id,
+		reply_id,
+		is_subReply
+	} = {
+		article_id: '',
+		content: '',
+		comment_id: '',
+		reply_id: '',
+		is_subReply: false
+	}){
+		return this.request({
+			url: 'update_comment',
+			data:{
+				article_id,
+				content,
+				comment_id,
+				reply_id,
+				is_subReply
 			}
 		})
 	}
