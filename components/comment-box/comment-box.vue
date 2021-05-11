@@ -2,7 +2,7 @@
 	<view class="comment-box">
 		<view class="comment-header">
 			<view class="comment-header__logo">
-				<image :src="comment.author.avator" mode="aspectFill"></image>
+				<image :src="comment.author.avatar" mode="aspectFill"></image>
 			</view>
 			<view class="comment-header__info">
 				<view v-if="!comment.is_subReply" class="title">
@@ -48,6 +48,11 @@
 				default: false
 			}
 		},
+		watch:{
+			comment(newVal){
+				console.log(newVal)
+			}
+		},
 		data() {
 			return {
 
@@ -75,9 +80,9 @@
 
 			.comment-header__logo {
 				flex-shrink: 0;
-				width: 30px;
-				height: 30px;
-				border-radius: 5px;
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
 				overflow: hidden;
 
 				image {

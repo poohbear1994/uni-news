@@ -124,6 +124,20 @@ class IndexModel extends HTTP {
 			}
 		})
 	}
+	
+	// 更新作者（关注，取消关注）
+	updateAuthor({
+		author_id
+	}={
+		author_id: ''
+	}){
+		return this.request({
+			url: 'update_author',
+			data:{
+				author_id
+			}
+		})
+	}
 }
 
 export {

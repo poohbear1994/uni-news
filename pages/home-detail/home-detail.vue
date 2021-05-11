@@ -17,6 +17,7 @@
 					<text>{{detailData.thumbs_up_count}} 赞</text>
 				</view>
 			</view>
+			<button class="detail-header__button" type="default" @click="follow(detailData.author.id)">{{detailData.is_author_like?'取消关注':'关注'}}</button>
 		</view>
 		<!-- 内容区 -->
 		<view class="detail-content">
@@ -44,7 +45,7 @@
 					<uni-icons type="chat" size="22" color="#F07373"></uni-icons>
 				</view>
 				<view class="detail-bottom__icons-box">
-					<uni-icons type="heart" size="22" color="#F07373"></uni-icons>
+					<uni-icons :type="detailData.is_like ? 'heart-filled' : 'heart' " size="22" color="#F07373" @click=likeTap></uni-icons>
 				</view>
 				<view class="detail-bottom__icons-box">
 					<uni-icons type="hand-thumbsup" size="22" color="#F07373"></uni-icons>
@@ -94,22 +95,6 @@
 			};
 		},
 		methods:{
-			// 获取文章详情
-			async getDetailData(){
-				const res = await indexModel.getDetail({
-					article_id: this.detailData._id
-				})
-				return res.data
-			},
-			
-			// 获取文章评论
-			async getComments(){
-				const res = await indexModel.getComment({
-					article_id: this.detailData._id
-				})
-				return res.data
-			},
-			
 			// 发布评论/回复
 			async submit() {
 				this.showLoading()
@@ -123,6 +108,7 @@
 				const res = await indexModel.updateComment(data)
 				this.hideLoading()
 				this.setIsReplyToReply(false)
+				// 返回结果
 				if(res.code === 200){
 					uni.showToast({
 						title:this.currentMode === 'comment'?'评论成功':'回复成功',
@@ -192,6 +178,87 @@
 					replyData.is_subReply = this.isReplyToReply
 				}
 				 return replyData
+			},
+			
+			// 获取文章详情
+			async getDetailData(){
+				const res = await indexModel.getDetail({
+					article_id: this.detailData._id
+				})
+				return res.data
+			},
+			
+			// 获取文章评论
+			async getComments(){
+				const res = await indexModel.getComment({
+					article_id: this.detailData._id
+				})
+				return res.data
+			},
+			
+			// 关注 / 取消关注
+			async follow(author_id){
+				let followState = this.isFollow()
+				this.showLoading()
+				const res = await indexModel.updateAuthor({
+					author_id
+				})
+				this.hideLoading()
+				if(res.code === 200){
+					wx.showToast({
+						title: followState ? '已取消关注' : '关注成功',
+						icon: followState ? 'none' : 'success'
+					})
+					this.changeFollowState()
+					followState = this.isFollow()
+				}else{
+					wx.showToast({
+						title:'网络不好，稍后重试',
+						icon:'none'
+					})
+				}
+			},
+			
+			// 是否关注当前作者
+			isFollow(){
+				return this.detailData.is_author_like
+			},
+			
+			// 切换关注状态
+			changeFollowState(){
+				this.detailData.is_author_like = !this.detailData.is_author_like
+			},
+			
+			// 收藏事件
+			async likeTap(){
+				const likeState = this.isLike()
+				this.showLoading()
+			  const res =	await indexModel.updateLike({
+					article_id: this.detailData._id
+				})
+				this.hideLoading()
+				if(res.code === 200) {
+					this.changeLikeState()
+					wx.showToast({
+						title: likeState? '取消收藏':'已收藏',
+						icon: 'none'
+					})
+				}else{
+					wx.showToast({
+						title:'网络不好，稍后重试',
+						icon:'none'
+					})
+				}
+			},
+			
+			// 是否已收藏该文章
+			isLike(){
+				return this.detailData.is_like
+			},
+			
+			// 切换收藏状态
+			changeLikeState(){
+				this.detailData.is_like = !this.detailData.is_like
 			},
 			
 			// 设置当前模式
@@ -303,6 +370,13 @@
 						margin-right: 10px;
 					}
 				}
+			}
+			.detail-header__button{
+				flex-shrink: 0;
+				height: 30px;
+				font-size: 12px;
+				color: #fff;
+				background-color: $mk-base-color;
 			}
 		}
 		.detail-content{

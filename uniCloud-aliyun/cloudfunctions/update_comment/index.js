@@ -35,7 +35,7 @@ exports.main = async (event, context) => {
 		author: {
 			author_id: user._id,
 			author_name: user.author_name,
-			avatar: user.avator,
+			avatar: user.avatar,
 			// 专业
 			professional: user.professional
 		},
