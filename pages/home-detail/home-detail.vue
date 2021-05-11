@@ -45,10 +45,10 @@
 					<uni-icons type="chat" size="22" color="#F07373"></uni-icons>
 				</view>
 				<view class="detail-bottom__icons-box">
-					<uni-icons :type="detailData.is_like ? 'heart-filled' : 'heart' " size="22" color="#F07373" @click=likeTap></uni-icons>
+					<uni-icons :type="detailData.is_like ? 'heart-filled' : 'heart'" size="22" color="#F07373" @click="likeTap" ></uni-icons>
 				</view>
 				<view class="detail-bottom__icons-box">
-					<uni-icons type="hand-thumbsup" size="22" color="#F07373"></uni-icons>
+					<uni-icons :type="detailData.is_thumbs_up? 'hand-thumbsup-filled':'hand-thumbsup' " size="22" color="#F07373" @click="thumbsUp(detailData._id)"></uni-icons>
 				</view>
 			</view>
 		</view>
@@ -239,6 +239,7 @@
 				this.hideLoading()
 				if(res.code === 200) {
 					this.changeLikeState()
+					uni.$emit('update_article')
 					wx.showToast({
 						title: likeState? '取消收藏':'已收藏',
 						icon: 'none'
@@ -259,6 +260,40 @@
 			// 切换收藏状态
 			changeLikeState(){
 				this.detailData.is_like = !this.detailData.is_like
+			},
+			
+			// 点赞事件
+			async thumbsUp(article_id){
+				if(this.isThumbsUp()){
+					wx.showToast({
+						title: '您已经点赞过',
+						icon: 'none'
+					})
+					return
+				}
+				this.showLoading()
+				const res = await indexModel.updateThumbsUp({
+					article_id
+				})
+				this.hideLoading()
+				if(res.code === 200){			
+					this.changeThumbsUp()
+					wx.showToast({
+						title: res.msg,
+						icon: 'none'
+					})
+				}
+			},
+			
+			// 判断是否已经点赞过
+			isThumbsUp(){
+				return this.detailData.is_thumbs_up
+			},
+			
+			// 改变点赞状态
+			changeThumbsUp(){
+				this.detailData.is_thumbs_up = !this.detailData.is_thumbs_up
+				this.detailData.thumbs_up_count += 1
 			},
 			
 			// 设置当前模式

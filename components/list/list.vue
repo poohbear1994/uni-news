@@ -1,7 +1,7 @@
 <template>
 	<swiper class="home" @change="change" :current="activeIndex">
 		<swiper-item class="swiper-item" v-for="(item, index) in tab" :key="item.name">
-			<list-item @loadmore="loadmore(index)" :list="listCacheData[index]?listCacheData[index].data : []"
+			<list-item @loadmore="loadmore(index)" :list="listCacheData[index] ? listCacheData[index].data : []"
 				:loading="loading[index]"></list-item>
 		</swiper-item>
 	</swiper>
@@ -168,6 +168,12 @@
 				})
 				this.setLoading(this.activeIndex, 'more')
 			}
+		},
+		
+		created(){
+			uni.$on('update_article', () => {
+				console.log('更新点赞')
+			})
 		}
 	}
 </script>

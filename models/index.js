@@ -138,6 +138,20 @@ class IndexModel extends HTTP {
 			}
 		})
 	}
+	
+	// 文章点赞
+	updateThumbsUp({
+		article_id
+	}={
+		article_id: ''
+	}){
+		return this.request({
+			url: 'update_thumbsup',
+			data:{
+				article_id
+			}
+		})
+	}
 }
 
 export {
