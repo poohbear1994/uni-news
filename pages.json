@@ -42,6 +42,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/detail-comments/detail-comments",
+			"style": {
+				"navigationBarTitleText": "评论",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"tabBar": {

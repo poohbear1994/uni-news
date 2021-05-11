@@ -87,14 +87,20 @@ class IndexModel extends HTTP {
 	
 	// 获取评论
 	getComment({
-		article_id
+		article_id,
+		pageSize,
+		page
 	}={
-		article_id:''
+		article_id:'',
+		pageSize:10,
+		page:1
 	}){
 		return this.request({
 			url: 'get_comment',
 			data:{
-				article_id
+				article_id,
+				pageSize,
+				page
 			}
 		})
 	}

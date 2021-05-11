@@ -42,7 +42,7 @@
 			</view>
 			<view class="detail-bottom__icons">
 				<view class="detail-bottom__icons-box">
-					<uni-icons type="chat" size="22" color="#F07373"></uni-icons>
+					<uni-icons type="chat" size="22" color="#F07373" @click="jumpToDetailComments"></uni-icons>
 				</view>
 				<view class="detail-bottom__icons-box">
 					<uni-icons :type="detailData.is_like ? 'heart-filled' : 'heart'" size="22" color="#F07373" @click="likeTap" ></uni-icons>
@@ -74,6 +74,7 @@
 		IndexModel
 	} from '../../models/index.js'
 	const indexModel = new IndexModel()
+	
 	export default {
 		components:{
 			uParse
@@ -283,6 +284,13 @@
 						icon: 'none'
 					})
 				}
+			},
+			
+			// 跳转到评论页
+			jumpToDetailComments(){
+				uni.navigateTo({
+					url:`../detail-comments/detail-comments?id=${this.detailData._id}`
+				})
 			},
 			
 			// 判断是否已经点赞过

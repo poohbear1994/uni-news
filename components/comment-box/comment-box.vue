@@ -13,7 +13,7 @@
 					<text class="reply-text">回复</text>
 					{{comment.to}}
 				</view>
-				<view>{{comment.create_time}}</view>
+				<view>{{parseTime(comment.create_time)}}</view>
 			</view>
 		</view>
 		<view class="comment-content">
@@ -30,6 +30,7 @@
 
 <script>
 	import commentBox from '@/components/comment-box/comment-box.vue'
+	import { parseTime } from '@/utils/index'
 	export default {
 		name: "comment-box",
 		comments: {
@@ -66,6 +67,9 @@
 					params.comment.comment_id = this.comment.comment_id
 				}
 				this.$emit('reply',params)
+			},
+			parseTime(str){
+				return parseTime(str)
 			}
 		}
 	}
