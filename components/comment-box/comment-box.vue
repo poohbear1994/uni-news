@@ -19,7 +19,7 @@
 		<view class="comment-content">
 			<view>{{comment.comment_content}}</view>
 			<view class="comment-info">
-				<view class="comment-button" @click="commentReply({comment,is_reply:reply})">回复</view>
+				<view class="comment-button" @click="commentReply({comment,is_subReply:reply})">回复</view>
 			</view>
 			<view class="comment-reply" v-for="item in comment.replys" :key="item.id">
 				<comment-box :reply="true" :comment="item" @reply="commentReply"></comment-box>
@@ -49,24 +49,27 @@
 				default: false
 			}
 		},
-		watch:{
-			comment(newVal){
-				console.log(newVal)
+		data(){
+			return{
+				temp: ''
 			}
-		},
-		data() {
-			return {
-
-			};
 		},
 		methods:{
 			commentReply(params){
-				// 回复回复
-				if(params.is_reply){
+				// 子回复
+				if(params.is_subReply){
+					if(this.temp && params.comment.comment_id === this.comment.comment_id){
+						params.comment.comment_id = this.temp
+					}
 					params.comment.reply_id = params.comment.comment_id
 					params.comment.comment_id = this.comment.comment_id
+					this.$emit('reply',params)
+					this.temp = params.comment.reply_id
+				}else{		
+					this.$emit('reply',params)
+					return
 				}
-				this.$emit('reply',params)
+				
 			},
 			parseTime(str){
 				return parseTime(str)

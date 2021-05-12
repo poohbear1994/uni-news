@@ -29,8 +29,13 @@
 			<!-- 评论区 -->
 			<view class="detail-comment">
 				<view class="comment-title">最新评论</view>
-				<view class="comment-content" v-for="item in commentsList" :key="item.comment_id">
-					<comment-box :comment="item" @reply="reply"></comment-box>
+				<view v-if="commentsList.length > 0">		
+					<view class="comment-content" v-for="item in commentsList" :key="item.comment_id">
+						<comment-box :comment="item" @reply="reply"></comment-box>
+					</view>
+				</view>
+				<view v-else class="comment-no__content">
+					暂无评论
 				</view>
 			</view>
 		</view>
@@ -319,8 +324,8 @@
 			async closeComment() {
 				this.$refs.popup.close()
 				this.clearCommentValue()
-				const commentsListData = await this.getComments()
-				this.setCommentsList(commentsListData)
+				// const commentsListData = await this.getComments()
+				// this.setCommentsList(commentsListData)
 			},
 			
 			// 设置评论数据
@@ -439,6 +444,11 @@
 				.comment-content{
 					padding: 0 15px;
 					border-top: 1px solid #eee;
+				}
+				.comment-no__content{
+					font-size: 14px;
+					text-align: center;
+					padding: 10px 15px;
 				}
 			}
 		}

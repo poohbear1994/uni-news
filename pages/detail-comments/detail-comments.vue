@@ -1,8 +1,13 @@
 <template>
 	<view>
 		<view class="comments-content" v-for="(item,index) in commentsList" :key="item.comment_id">
-			<comment-box :comment="item" ></comment-box>
+			<comment-box :comment="item" @reply="reply"></comment-box>
 		</view>
+		<view class="comment-btn" @click="comment">
+			<uni-icons type="compose" size="30" color="#fff"></uni-icons>
+			评论
+		</view>
+		<comment-popup :popupSwitch="popupSwitch"  @submit="submit"></comment-popup>
 	</view>
 </template>
 
@@ -16,12 +21,88 @@
 			return {
 				article_id:'',
 				commentsList:[],
+				currentTarget:{},
 				pageSize:10,
 				page:1,
-				lock: false
+				lock: false,
+				// 弹出层开关
+				popupSwitch: 0,
+				currentMode: 'comment'
 			};
 		},
 		methods:{
+			// 提交事件
+			async submit(submitVal,finishCallback){
+				const {comment} = this.getCurrentTarget()
+				const currentMode = this.getCurrentMode()
+				this.showLoading()
+				let res = null
+				if(currentMode === 'reply'){
+					res = await indexModel.updateComment({
+						article_id: this.article_id,
+						content: submitVal,
+						comment_id: comment.comment_id,
+						reply_id: comment.reply_id,
+						is_subReply: comment.reply_id ? true : false
+					})					
+				}else if(currentMode === 'comment'){
+					res = await indexModel.updateComment({
+						article_id: this.article_id,
+						content: submitVal
+					})
+				}
+				this.hideLoading()
+				if(res.code === 200){
+					uni.showToast({
+						title:currentMode === 'comment'?'评论成功':'回复成功',
+						icon:'none'
+					})
+				}
+				finishCallback()
+			},
+			
+			// 评论
+			comment(){
+				this.setCurrentMode('comment')
+				const data = {
+					article_id: this.article_id
+				}
+				this.setCurrentTarget({comment:data})
+				this.openPopup()
+			},
+			
+			// 回复
+			reply(params){
+				this.setCurrentMode('reply')
+				this.setCurrentTarget(params)
+				this.openPopup()
+			},
+			
+			// 设置回复/评论的目标
+			setCurrentTarget(obj){
+				this.currentTarget = obj
+			},
+			
+			// 设置当前模式是回复还是评论
+			setCurrentMode(mode){
+				this.currentMode = mode
+			},
+			
+			// 获取当前的模式
+			getCurrentMode(){
+				return this.currentMode
+			},
+			
+			// 获取当前目标
+			getCurrentTarget(){
+				return this.currentTarget
+			},
+			
+			// 打开弹出层
+			openPopup(){
+				const timestamp = Date.parse(new Date())
+				this.popupSwitch = timestamp
+			},
 			
 			// 加载更多
 			loadMore(){
@@ -140,5 +221,24 @@
 <style lang="scss">
 .comments-content{
 	padding:0 15px;
+}
+.comment-btn{
+	position: fixed;
+	right: 10px;
+	bottom: 60px;
+	z-index: 9;
+	width: 50px;
+	height: 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	font-size: 13px;
+	color: #fff;
+	background-color: #4CD964;
+	border: 1px solid #00BFFF;
+	padding: 10px;
+	border-radius: 50%;
 }
 </style>
