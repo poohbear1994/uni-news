@@ -8,7 +8,7 @@
 			<view class="listcard-content">
 				<view class="listcard-content_title">
 					<text>{{item.title}}</text>
-					<like :item="item"></like>
+					<like :item="item" :types="types"></like>
 				</view>
 				<view class="listcard-content__des">
 					<view class="listcard-content__des-label">
@@ -27,7 +27,7 @@ browse_count}}浏览</view>
 			<view class="listcard-content">
 				<view class="listcard-content_title">
 					<text>{{item.title}}</text>
-					<like :item="item"></like>
+					<like :item="item" :types="types"></like>
 				</view>
 				<view class="listcard-image">
 					<view v-if="index < 3" v-for="(img, index) in item.cover" :key="index" class="listcard-image__item">
@@ -54,7 +54,7 @@ browse_count}}浏览</view>
 				</view>
 				<view class="listcard-content_title">
 					<text>{{item.title}}</text>
-					<like :item="item"></like>
+					<like :item="item" :types="types"></like>
 				</view>
 				<view class="listcard-content__des">
 					<view class="listcard-content__des-label">
@@ -79,6 +79,10 @@ browse_count}}浏览</view>
 				default () {
 					return {}
 				}
+			},
+			types: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {
@@ -96,7 +100,7 @@ browse_count}}浏览</view>
 			jumpToDetail(){
 				const params = this.setDetailPreloadData()
 				uni.navigateTo({
-					url:`../../pages/home-detail/home-detail?params=${JSON.stringify(params)}`
+					url:`/pages/home-detail/home-detail?params=${JSON.stringify(params)}`
 				})
 			},
 			// 设置传给detail页预加载用的数据

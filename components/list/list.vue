@@ -2,7 +2,7 @@
 	<swiper class="home" @change="change" :current="activeIndex">
 		<swiper-item class="swiper-item" v-for="(item, index) in tab" :key="item.name">
 			<list-item @loadmore="loadmore(index)" :list="listCacheData[index] ? listCacheData[index].data : []"
-				:loading="loading[index]"></list-item>
+				:loading="loading[index]" :types="types"></list-item>
 		</swiper-item>
 	</swiper>
 </template>
@@ -30,6 +30,10 @@
 				default () {
 					return 0
 				}
+			},
+			types: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {
@@ -144,6 +148,7 @@
 						data: cacheData.data.concat(data),
 						page,
 					})
+					console.log(this.listCacheData)
 					this.setLoading(this.activeIndex, 'more')
 				} else {
 					this.setLoading(this.activeIndex, 'noMore')
@@ -167,12 +172,29 @@
 					page: 1
 				})
 				this.setLoading(this.activeIndex, 'more')
+			},
+			
+			// 更新收藏状态
+			updateLikeStatus(item){
+				const listCacheDataArr = []
+				for (let index in this.listCacheData) {
+					listCacheDataArr.push(this.listCacheData[index])
+				}
+				const id = item._id
+				for (let i in listCacheDataArr) {
+					for (let j in listCacheDataArr[i].data) {
+						if(listCacheDataArr[i].data[j]._id === id){
+							listCacheDataArr[i].data[j].is_like = item.is_like
+							this.$set(this.listCacheData,i,listCacheDataArr[i])
+						}
+					}
+				}
 			}
 		},
 		
 		created(){
-			uni.$on('update_article', () => {
-				console.log('更新点赞')
+			uni.$on('update_article', ({item,type}) => {
+				this.updateLikeStatus(item)
 			})
 		}
 	}

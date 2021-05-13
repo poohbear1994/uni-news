@@ -1,6 +1,6 @@
 <template>
 	<list-scroll @loadmore="loadmore" class="list-scroll">
-		<list-card v-for="item in list" :item="item" :key="item._id"/>
+		<list-card v-for="item in list" :item="item" :key="item._id" :types="types" />
 		<uni-load-more v-if="loadingStatus" iconType="snow" :status="loadingStatus" />
 	</list-scroll>
 </template>
@@ -20,11 +20,15 @@
 				default() {
 					return 'loading'
 				}
+			},
+			types: {
+				type: String,
+				default: ''
 			}
 		},
 		data(){
 			return {
-				loadingStatus: 'loading'
+				loadingStatus: 'loading',
 			}
 		},
 		watch:{

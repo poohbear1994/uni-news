@@ -7,19 +7,25 @@
 </template>
 
 <script>
-	import { IndexModel } from '../../models/index.js'
+	import {
+		IndexModel
+	} from '../../models/index.js'
 	const indexModel = new IndexModel()
 	export default {
-		name:"like",
-		props:{
+		name: "like",
+		props: {
 			item: {
 				type: Object,
-				default() {
+				default () {
 					return {}
 				}
+			},
+			types: {
+				type: String,
+				default: ''
 			}
 		},
-		watch:{
+		watch: {
 			item(newVal) {
 				this.like = newVal.is_like
 			}
@@ -29,7 +35,7 @@
 				like: false
 			};
 		},
-		methods:{
+		methods: {
 			likeTap() {
 				this.like = !this.like
 				this.updateLikes()
@@ -39,16 +45,21 @@
 				const res = await indexModel.updateLike({
 					article_id: this.item._id
 				})
-				console.log(res)
 				uni.hideLoading()
-				uni.showToast({
-					title:this.like?'收藏成功':'取消收藏',
-					icon:'success'
-				})
+				if (res.code === 200) {
+					uni.showToast({
+						title: this.like ? '收藏成功' : '取消收藏',
+						icon: 'success'
+					})
+					uni.$emit('update_article', {
+						item: this.item,
+						type: this.types
+					})
+				}
+
 			}
 		},
 		created() {
-			// console.log(this.item)
 			this.like = this.item.is_like
 		}
 	}
@@ -62,7 +73,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width:  20px;
+		width: 20px;
 		height: 20px;
 	}
 </style>

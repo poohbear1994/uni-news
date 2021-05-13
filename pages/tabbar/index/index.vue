@@ -3,7 +3,7 @@
 		<navbar />
 		<tab :list="tabList" :tabIndex="tabIndex" @tab="tab" />
 		<view class="home-list">
-			<list :tab="tabList" @change="change" :activeIndex="activeIndex"></list>
+			<list :tab="tabList" @change="change" :activeIndex="activeIndex" :types="types"></list>
 		</view>
 	</view>
 </template>
@@ -18,7 +18,8 @@
 			return {
 				tabList: [],
 				tabIndex: 0,
-				activeIndex: 0
+				activeIndex: 0,
+				types:'index'
 			}
 		},
 		methods: {

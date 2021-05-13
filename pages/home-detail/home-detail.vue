@@ -176,6 +176,7 @@
 				})
 				uni.hideLoading()
 				if(res.code === 200){
+					uni.$emit('update_author')
 					wx.showToast({
 						title: followState ? '已取消关注' : '关注成功',
 						icon: followState ? 'none' : 'success'
@@ -210,7 +211,7 @@
 				uni.hideLoading()
 				if(res.code === 200) {
 					this.changeLikeState()
-					uni.$emit('update_article')
+					uni.$emit('update_article',{item:this.detailData,type:'index'})
 					wx.showToast({
 						title: likeState? '取消收藏':'已收藏',
 						icon: 'none'
