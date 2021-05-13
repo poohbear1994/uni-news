@@ -41,7 +41,7 @@
 		</view>
 		<!-- 底部栏 -->
 		<view class="detail-bottom">
-			<view class="detail-bottom__input" @click="openComment('comment')">
+			<view class="detail-bottom__input" @click="openPopup('comment')">
 				<text>谈谈你的看法</text>
 				<uni-icons type="compose" size="16" color="#F07373"></uni-icons>
 			</view>
@@ -273,13 +273,8 @@
 			},
 			
 			// 打开评论区域
-			openComment(mode) {
+			openPopup(mode) {
 				this.setCurrentMode(mode)
-				this.openPopup()
-			},
-			
-			// 打开弹出层
-			openPopup(){
 				const timestamp = Date.parse(new Date())
 				this.popupSwitch = timestamp
 			},

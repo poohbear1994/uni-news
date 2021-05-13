@@ -11,7 +11,7 @@
 <script>
 	import {
 		IndexModel
-	} from '../../models/index.js'
+	} from '@/models/index.js'
 	const indexModel = new IndexModel()
 	export default {
 		data() {
