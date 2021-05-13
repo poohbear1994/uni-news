@@ -47,6 +47,13 @@
 			
 			// 提交
 			submit(){
+				if(!this.commentValue) {
+					uni.showToast({
+						title:'请输入评论的内容',
+						icon:'none'
+					})
+					return
+				}
 				this.$emit('submit', this.commentValue, this.closeComment)
 			}
 		}

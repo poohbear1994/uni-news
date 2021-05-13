@@ -58,18 +58,7 @@
 			</view>
 		</view>
 		<!-- 弹出层 -->
-		<uni-popup ref="popup" type="bottom" :maskClick="false">
-			<view class="popup-wrap">
-				<view class="popup-header">
-					<text class="popup-header__item" @click="closeComment">取消</text>
-					<text class="popup-header__item" @click="submit">发布</text>
-				</view>
-				<view class="popup-content">
-					<textarea class="popup-textarea" v-model="commentValue" maxlength="200" fixed placeholder="请输入评论内容" auto-focus />
-					<view class="popup-count">{{commentValue.length}}/200</view>
-				</view>
-			</view>
-		</uni-popup>
+		<comment-popup :popupSwitch="popupSwitch"  @submit="submit"></comment-popup>
 	</view>
 </template>
 
@@ -88,39 +77,39 @@
 			return {
 				detailData: {},
 				noData:'<p style="text-align:center; color:#666">详情加载中...</p>',
-				// 评论内容
-				commentValue:'',
 				// 评论数据
 				commentsList:[],
 				// 回复的评论
 				commentOfReply:{},
 				// 当前的模式是评论还是回复
 				currentMode:'comment',
-				// 当前是否是回复另一条回复
-				isReplyToReply: false
+				// 当前是否是子回复
+				isSubReply: false,
+				// 弹出层开关
+				popupSwitch: 0,
 			};
 		},
 		methods:{
 			// 发布评论/回复
-			async submit() {
-				this.showLoading()
+			async submit(textareaVal,finishCallback) {
+				uni.showLoading()
 				let data = null
 				if(this.currentMode === 'comment'){	
-					data = this.setPostCommentData()
+					data = this.setPostCommentData(textareaVal)
 				}else if(this.currentMode === 'reply'){
 					const currentComment = this.getCommentOfReply()
-					data = this.setPostReplyData(currentComment)
+					data = this.setPostReplyData(currentComment, textareaVal)
 				}
 				const res = await indexModel.updateComment(data)
-				this.hideLoading()
-				this.setIsReplyToReply(false)
+				uni.hideLoading()
+				this.setIsSubReply(false)
 				// 返回结果
 				if(res.code === 200){
 					uni.showToast({
 						title:this.currentMode === 'comment'?'评论成功':'回复成功',
 						icon:'success'
 					})
-					this.closeComment()
+					finishCallback()
 					return
 				}else{
 					uni.showToast({
@@ -131,16 +120,8 @@
 			},
 			
 			// 设置上传的评论数据
-			setPostCommentData() {
-				const comment = this.commentValue
-				if(!comment) {
-					uni.showToast({
-						title:'请输入评论的内容',
-						icon:'none'
-					})
-					this.closeComment()
-					return
-				}
+			setPostCommentData(textareaVal) {
+				const comment = textareaVal
 				const article_id = this.detailData._id
 				return {
 					article_id,
@@ -153,7 +134,7 @@
 				this.openComment('reply')
 				this.setCommentOfReply(params.comment)
 				if(params.comment.reply_id){
-					this.setIsReplyToReply(true)
+					this.setIsSubReply(true)
 				}
 			},
 			
@@ -168,48 +149,32 @@
 			},
 			
 			// 设置是否回复回复
-			setIsReplyToReply(bool){
-				this.isReplyToReply = bool
+			setIsSubReply(bool){
+				this.isSubReply = bool
 			},
 			
 			// 处理需要上传的回复评论数据
-			setPostReplyData(comment){
+			setPostReplyData(comment, textareaVal){
 				const replyData = {
 					article_id: this.detailData._id,
 					comment_id: comment.comment_id,
-					content: this.commentValue
+					content: textareaVal
 				}
-				if(this.isReplyToReply){
+				if(this.isSubReply){
 					replyData.reply_id = comment.reply_id
-					replyData.is_subReply = this.isReplyToReply
+					replyData.is_subReply = this.isSubReply
 				}
 				 return replyData
-			},
-			
-			// 获取文章详情
-			async getDetailData(){
-				const res = await indexModel.getDetail({
-					article_id: this.detailData._id
-				})
-				return res.data
-			},
-			
-			// 获取文章评论
-			async getComments(){
-				const res = await indexModel.getComment({
-					article_id: this.detailData._id
-				})
-				return res.data
 			},
 			
 			// 关注 / 取消关注
 			async follow(author_id){
 				let followState = this.isFollow()
-				this.showLoading()
+				uni.showLoading()
 				const res = await indexModel.updateAuthor({
 					author_id
 				})
-				this.hideLoading()
+				uni.hideLoading()
 				if(res.code === 200){
 					wx.showToast({
 						title: followState ? '已取消关注' : '关注成功',
@@ -238,11 +203,11 @@
 			// 收藏事件
 			async likeTap(){
 				const likeState = this.isLike()
-				this.showLoading()
+				uni.showLoading()
 			  const res =	await indexModel.updateLike({
 					article_id: this.detailData._id
 				})
-				this.hideLoading()
+				uni.hideLoading()
 				if(res.code === 200) {
 					this.changeLikeState()
 					uni.$emit('update_article')
@@ -277,11 +242,11 @@
 					})
 					return
 				}
-				this.showLoading()
+				uni.showLoading()
 				const res = await indexModel.updateThumbsUp({
 					article_id
 				})
-				this.hideLoading()
+				uni.hideLoading()
 				if(res.code === 200){			
 					this.changeThumbsUp()
 					wx.showToast({
@@ -289,13 +254,6 @@
 						icon: 'none'
 					})
 				}
-			},
-			
-			// 跳转到评论页
-			jumpToDetailComments(){
-				uni.navigateTo({
-					url:`../detail-comments/detail-comments?id=${this.detailData._id}`
-				})
 			},
 			
 			// 判断是否已经点赞过
@@ -317,15 +275,13 @@
 			// 打开评论区域
 			openComment(mode) {
 				this.setCurrentMode(mode)
-				this.$refs.popup.open()
+				this.openPopup()
 			},
 			
-			// 关闭评论区域
-			async closeComment() {
-				this.$refs.popup.close()
-				this.clearCommentValue()
-				// const commentsListData = await this.getComments()
-				// this.setCommentsList(commentsListData)
+			// 打开弹出层
+			openPopup(){
+				const timestamp = Date.parse(new Date())
+				this.popupSwitch = timestamp
 			},
 			
 			// 设置评论数据
@@ -343,25 +299,33 @@
 				this.detailData = data
 			},
 			
-			// 清空评论内容
-			clearCommentValue(){
-				this.commentValue = ''
+			// 跳转到评论页
+			jumpToDetailComments(){
+				uni.navigateTo({
+					url:`../detail-comments/detail-comments?id=${this.detailData._id}`
+				})
+			},
+			
+			// 获取文章详情
+			async getDetailData(){
+				const res = await indexModel.getDetail({
+					article_id: this.detailData._id
+				})
+				return res.data
+			},
+			
+			// 获取文章评论
+			async getComments(){
+				const res = await indexModel.getComment({
+					article_id: this.detailData._id
+				})
+				return res.data
 			},
 			
 			// 解析通过query传递的数据
 			analysisQuery(query){
 				return JSON.parse(query.params)
 			},
-			
-			// 开启loading
-			showLoading(){
-				uni.showLoading()
-			},
-			
-			// 关闭loading
-			hideLoading(){
-				uni.hideLoading()
-			}
 		},
 		
 		async onLoad(query){

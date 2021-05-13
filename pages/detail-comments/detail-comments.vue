@@ -73,6 +73,7 @@
 			
 			// 回复
 			reply(params){
+				console.log(params)
 				this.setCurrentMode('reply')
 				this.setCurrentTarget(params)
 				this.openPopup()
