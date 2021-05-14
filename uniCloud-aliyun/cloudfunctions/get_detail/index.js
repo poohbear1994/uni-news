@@ -24,7 +24,6 @@ exports.main = async (event, context) => {
 	}).project({
 		coments: false
 	}).end()
-	console.log(list)
 
 	return {
 		code: 200,

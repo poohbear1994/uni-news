@@ -1,7 +1,7 @@
 <template>
 	<swiper class="home" @change="change" :current="activeIndex">
 		<swiper-item class="swiper-item" v-for="(item, index) in tab" :key="item.name">
-			<list-item @loadmore="loadmore(index)" :list="listCacheData[index] ? listCacheData[index].data : []"
+			<list-item @loadmore="loadmore(index)" :list="list[index] ? list[index].data : []"
 				:loading="loading[index]" :types="types"></list-item>
 		</swiper-item>
 	</swiper>
@@ -39,11 +39,20 @@
 		data() {
 			return {
 				currentIndex: 0,
-				list: [],
 				listCacheData: {},
 				pageSize: 5,
 				loading: {}
 			};
+		},
+		computed:{
+			list:{
+				get(){
+					return this.listCacheData
+				},
+				set(){
+					
+				}
+			}
 		},
 		watch:{
 			tab(){
@@ -148,7 +157,6 @@
 						data: cacheData.data.concat(data),
 						page,
 					})
-					console.log(this.listCacheData)
 					this.setLoading(this.activeIndex, 'more')
 				} else {
 					this.setLoading(this.activeIndex, 'noMore')
@@ -165,7 +173,7 @@
 				const data = await this.getListData({
 					category: "全部"
 				})
-				this.setList(data)
+				// this.setList(data)
 				this.setListCacheData({
 					index: 0,
 					data,
@@ -185,10 +193,10 @@
 					for (let j in listCacheDataArr[i].data) {
 						if(listCacheDataArr[i].data[j]._id === id){
 							listCacheDataArr[i].data[j].is_like = item.is_like
-							this.$set(this.listCacheData,i,listCacheDataArr[i])
 						}
 					}
 				}
+				this.listCacheData = {...listCacheDataArr}
 			}
 		},
 		
