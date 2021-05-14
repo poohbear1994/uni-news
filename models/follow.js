@@ -1,4 +1,4 @@
-import {HTTP} from '@/utils/http.js'
+import HTTP from '@/utils/http.js'
 
 class FollowModel extends HTTP{
 	// 获取关注的文章

@@ -1,6 +1,4 @@
-import {
-	HTTP
-} from '../utils/http.js'
+import HTTP from '../utils/http.js'
 
 class IndexModel extends HTTP {
 	// 获取category

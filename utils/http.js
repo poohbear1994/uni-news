@@ -3,9 +3,10 @@ class HTTP {
 		const {
 			url,
 			data,
+			user_id
 		} = params
 		const dataObj = {
-			user_id : '608e47a79abec80001c2ce32',
+			user_id: uni.getStorageSync('user_id') || user_id,
 			...data
 		}
 		return new Promise((resolve, reject) => {
@@ -25,6 +26,4 @@ class HTTP {
 	}
 }
 
-export {
-	HTTP
-}
+export default HTTP
