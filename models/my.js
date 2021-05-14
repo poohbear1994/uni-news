@@ -7,6 +7,11 @@ class MyModel extends HTTP{
 			user_id
 		})
 	}
+	getMyArticle(){
+		return this.request({
+			url:'get_my_article'
+		})
+	}
 }
 
 export {
