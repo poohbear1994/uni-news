@@ -2,7 +2,9 @@
 	<view class="navbar">
 		<view class="navbar-fixed">
 			<!-- 状态栏 -->
+			<!-- #ifndef MP-ALIPAY -->
 			<view :style="{height: statusBarHeight+'px'}"></view>
+			<!-- #endif -->
 			<!-- 导航栏 -->
 			<view class="navbar-content" :class="{search:isSearch}"
 				:style="{ height: navbarHeight + 'px', width: searchWidth ? searchWidth + 'px' : '100%'}"
@@ -74,7 +76,9 @@
 			// 获取状态栏高度
 			const info = uni.getSystemInfoSync()
 			this.statusBarHeight = info.statusBarHeight
-
+			// #ifdef MP-ALIPAY
+			this.statusBarHeight = 0
+			// #endif
 			// 获取胶囊按钮的位置
 			// #ifndef H5
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect()

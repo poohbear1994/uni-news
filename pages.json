@@ -5,12 +5,16 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "white",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus":{
+					"scrollIndicator":"none"
+				}
 			}
 		}, {
 			"path": "pages/tabbar/my/my",
 			"style": {
 				"navigationBarTitleText": "我的",
+				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": false
 			}
 
@@ -18,6 +22,7 @@
 			"path": "pages/tabbar/follow/follow",
 			"style": {
 				"navigationBarTitleText": "关注",
+				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": false
 			}
 
@@ -32,6 +37,7 @@
 			"path": "pages/home-label/home-label",
 			"style": {
 				"navigationBarTitleText": "标签管理",
+				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": false
 			}
 
@@ -39,6 +45,7 @@
 			"path": "pages/home-detail/home-detail",
 			"style": {
 				"navigationBarTitleText": "uni-news",
+				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": false
 			}
 
@@ -46,6 +53,7 @@
 			"path": "pages/detail-comments/detail-comments",
 			"style": {
 				"navigationBarTitleText": "评论",
+				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": false
 			}
 
@@ -53,6 +61,7 @@
 			"path": "pages/my-article/my-article",
 			"style": {
 				"navigationBarTitleText": "我的文章",
+				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": false
 			}
 
@@ -60,6 +69,7 @@
 			"path": "pages/feedback/feedback",
 			"style": {
 				"navigationBarTitleText": "意见反馈",
+				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": false
 			}
 
@@ -90,7 +100,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#F07373",
 		"backgroundColor": "#F8F8F8"
 	}
 }

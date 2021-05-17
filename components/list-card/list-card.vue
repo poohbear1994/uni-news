@@ -3,7 +3,7 @@
 		<!-- 基础卡片样式 -->
 		<view v-if="item.mode === 'base'" class="list-card">
 			<view class="listcard-image">
-				<image :src="item.cover[0]" mode="aspectFill" />
+				<image lazy-load="true" :src="item.cover[0]" mode="aspectFill" />
 			</view>
 			<view class="listcard-content">
 				<view class="listcard-content_title">
@@ -31,7 +31,7 @@ browse_count}}浏览</view>
 				</view>
 				<view class="listcard-image">
 					<view v-if="index < 3" v-for="(img, index) in item.cover" :key="index" class="listcard-image__item">
-						<image :src="img" mode="aspectFill" />
+						<image lazy-load="true" :src="img" mode="aspectFill" />
 					</view>
 				</view>
 				<view class="listcard-content__des">
@@ -50,7 +50,7 @@ browse_count}}浏览</view>
 		<view class="list-card mode-image" v-if="item.mode === 'image'">
 			<view class="listcard-content">
 				<view class="listcard-image">
-					<image :src="item.cover[0]" mode="scaleToFill" />
+					<image lazy-load="true" :src="item.cover[0]" mode="scaleToFill" />
 				</view>
 				<view class="listcard-content_title">
 					<text>{{item.title}}</text>

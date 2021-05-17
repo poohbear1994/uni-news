@@ -9,7 +9,7 @@
 				<view v-if="loadingStatus" class="loading">			
 					<uni-load-more iconType="snow" status="loading"/>
 				</view>
-				<view class="label-content__item" v-for="item in listOfMyLabels">
+				<view class="label-content__item" v-for="item in listOfMyLabels" :key="item.name">
 					{{item.name}}
 					<uni-icons v-if="is_edit" type="clear" size="20" color="red" class="icons-close"
 						@click="cancelLabel(item)" />
@@ -24,7 +24,7 @@
 			</view>
 			<view class="label-content">
 				<view class="label-content__item" v-for="item in listOfRecommendLabels"
-					@click="addToListOfMyLabels(item)">{{item.name}}</view>
+					:key="item.name" @click="addToListOfMyLabels(item)">{{item.name}}</view>
 			</view>
 		</view>
 	</view>
@@ -43,11 +43,12 @@
 				listOfAllLabels: [],
 				listOfMyLabels: [],
 				listOfRecommendLabels: [],
-				loadingStatus: true
+				loadingStatus: true,
+				originalMyLabels:[]
 			};
 		},
 		watch: {
-			listOfAllLabels() {
+			listOfAllLabels(newval,oldVal) {
 				this.setListOfMyLabelsAndListOfRecommendLabels()
 			}
 		},

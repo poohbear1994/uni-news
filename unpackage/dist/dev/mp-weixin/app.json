@@ -1,32 +1,38 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/my/my",
-    "pages/follow/follow"
+    "pages/tabbar/index/index",
+    "pages/tabbar/my/my",
+    "pages/tabbar/follow/follow",
+    "pages/home-search/home-search",
+    "pages/home-label/home-label",
+    "pages/home-detail/home-detail",
+    "pages/detail-comments/detail-comments",
+    "pages/my-article/my-article",
+    "pages/feedback/feedback"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
+    "navigationBarBackgroundColor": "#F07373",
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/tabbar/index/index",
         "iconPath": "static/tabbar/home.png",
         "selectedIconPath": "static/tabbar/home-active.png",
         "text": "首页"
       },
       {
-        "pagePath": "pages/follow/follow",
+        "pagePath": "pages/tabbar/follow/follow",
         "iconPath": "static/tabbar/follow.png",
         "selectedIconPath": "static/tabbar/follow-active.png",
         "text": "关注"
       },
       {
-        "pagePath": "pages/my/my",
+        "pagePath": "pages/tabbar/my/my",
         "iconPath": "static/tabbar/my.png",
         "selectedIconPath": "static/tabbar/my-active.png",
         "text": "我的"
@@ -37,5 +43,6 @@
     "backgroundColor": "#fff",
     "borderStyle": "black"
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }
