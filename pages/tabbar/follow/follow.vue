@@ -106,6 +106,9 @@
 			}
 		},
 		onLoad() {
+			
+		},
+		onShow() {
 			this.getFollowData()
 			this.getAuthorData()
 			uni.$on('update_article', this.cancelFollowArticle)

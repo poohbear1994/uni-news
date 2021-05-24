@@ -91,6 +91,10 @@ browse_count}}浏览</view>
 			};
 		},
 		methods: {
+			// 图片加载错误
+			imgError(item){
+				console.log('错误',item)
+			},
 			// 跳转页面
 			open() {
 				this.$emit('click',this.item)

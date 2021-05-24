@@ -230,6 +230,10 @@ var _default2 =
 
   },
   methods: {
+    // 图片加载错误
+    imgError: function imgError(item) {
+      console.log('错误', item);
+    },
     // 跳转页面
     open: function open() {
       this.$emit('click', this.item);

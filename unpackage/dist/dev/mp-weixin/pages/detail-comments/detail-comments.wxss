@@ -24,6 +24,12 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+.no-data {
+  padding: 50px;
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+}
 .comments-content {
   padding: 0 15px;
 }

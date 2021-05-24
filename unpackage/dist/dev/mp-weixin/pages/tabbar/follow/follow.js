@@ -270,6 +270,9 @@ var followModel = new _follow.FollowModel();var _default =
     } },
 
   onLoad: function onLoad() {
+
+  },
+  onShow: function onShow() {
     this.getFollowData();
     this.getAuthorData();
     uni.$on('update_article', this.cancelFollowArticle);

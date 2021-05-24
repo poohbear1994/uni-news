@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view class="no-data" v-if="!commentsList.length">
+			这篇文章还没有评论～
+		</view>
 		<view class="comments-content" v-for="(item,index) in commentsList" :key="item.comment_id">
 			<comment-box :comment="item" @reply="reply"></comment-box>
 		</view>
@@ -219,6 +222,12 @@
 </script>
 
 <style lang="scss">
+.no-data{
+	padding: 50px;
+	font-size: 14px;
+	color: #999;
+	text-align: center;
+}
 .comments-content{
 	padding:0 15px;
 }
