@@ -1,0 +1,10 @@
+(global["webpackJsonp"]=global["webpackJsonp"]||[]).push([["components/comment-box/comment-box"],{1959:function(t,e,n){"use strict";n.r(e);var o=n("b566"),c=n("c54d");for(var m in c)"default"!==m&&function(t){n.d(e,t,(function(){return c[t]}))}(m);n("b0fe");var r,i=n("f0c5"),u=Object(i["a"])(c["default"],o["b"],o["c"],!1,null,null,null,!1,o["a"],r);e["default"]=u.exports},"59d4":function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var o=m(n("1959")),c=n("8c3a");function m(t){return t&&t.__esModule?t:{default:t}}var r={name:"comment-box",comments:{commentBox:o.default},props:{comment:{type:Object,default:function(){return{}}},reply:{type:Boolean,default:!1}},data:function(){return{temp:""}},methods:{commentReply:function(t){t.is_subReply?(this.temp&&t.comment.comment_id===this.comment.comment_id&&(t.comment.comment_id=this.temp),t.comment.reply_id=t.comment.comment_id,t.comment.comment_id=this.comment.comment_id,this.$emit("reply",t),this.temp=t.comment.reply_id):this.$emit("reply",t)},parseTime:function(t){return(0,c.parseTime)(t)}}};e.default=r},b0fe:function(t,e,n){"use strict";var o=n("cd37"),c=n.n(o);c.a},b566:function(t,e,n){"use strict";n.d(e,"b",(function(){return c})),n.d(e,"c",(function(){return m})),n.d(e,"a",(function(){return o}));var o={commentBox:function(){return Promise.resolve().then(n.bind(null,"1959"))}},c=function(){var t=this,e=t.$createElement,n=(t._self._c,t.parseTime(t.comment.create_time));t.$mp.data=Object.assign({},{$root:{m0:n}})},m=[]},c54d:function(t,e,n){"use strict";n.r(e);var o=n("59d4"),c=n.n(o);for(var m in o)"default"!==m&&function(t){n.d(e,t,(function(){return o[t]}))}(m);e["default"]=c.a},cd37:function(t,e,n){}}]);
+;(global["webpackJsonp"] = global["webpackJsonp"] || []).push([
+    'components/comment-box/comment-box-create-component',
+    {
+        'components/comment-box/comment-box-create-component':(function(module, exports, __webpack_require__){
+            __webpack_require__('543d')['createComponent'](__webpack_require__("1959"))
+        })
+    },
+    [['components/comment-box/comment-box-create-component']]
+]);

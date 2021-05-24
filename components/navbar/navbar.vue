@@ -60,15 +60,16 @@
 			open() {
 				if (this.isSearch) return
 				uni.navigateTo({
-					url: '../../pages/home-search/home-search'
+					url: '/pages/home-search/home-search'
 				})
 			},
 			inputChange() {
 				this.$emit('input', this.inputVal)
 			},
 			back() {
+				console.log('back')
 				uni.switchTab({
-					url: '/pages/index/index'
+					url: '/pages/tabbar/index/index'
 				})
 			}
 		},
