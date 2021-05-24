@@ -109,6 +109,8 @@
 						title:this.currentMode === 'comment'?'评论成功':'回复成功',
 						icon:'success'
 					})
+					const commentsListData = await this.getComments()
+					this.setCommentsList(commentsListData)
 					finishCallback()
 					return
 				}else{
@@ -131,7 +133,7 @@
 			
 			// 回复评论
 			reply(params){
-				this.openComment('reply')
+				this.openPopup('reply')
 				this.setCommentOfReply(params.comment)
 				if(params.comment.reply_id){
 					this.setIsSubReply(true)

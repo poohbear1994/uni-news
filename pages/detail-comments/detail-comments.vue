@@ -60,6 +60,7 @@
 						title:currentMode === 'comment'?'评论成功':'回复成功',
 						icon:'none'
 					})
+					this.initialCommentList()
 				}
 				finishCallback()
 			},
