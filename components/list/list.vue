@@ -184,7 +184,6 @@
 			
 			// 更新收藏状态
 			updateLikeStatus(item){
-				console.log(item)
 				const listCacheDataArr = []
 				for (let index in this.listCacheData) {
 					listCacheDataArr.push(this.listCacheData[index])

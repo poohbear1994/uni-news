@@ -67,7 +67,6 @@
 				this.$emit('input', this.inputVal)
 			},
 			back() {
-				console.log('back')
 				uni.switchTab({
 					url: '/pages/tabbar/index/index'
 				})
